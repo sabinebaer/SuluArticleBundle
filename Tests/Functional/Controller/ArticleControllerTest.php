@@ -112,6 +112,7 @@ class ArticleControllerTest extends SuluTestCase
         $this->assertEquals($template, $response['template']);
         $this->assertEquals('2016-01-01', date('Y-m-d', strtotime($response['authored'])));
         $this->assertEquals($this->getTestUser()->getContact()->getId(), $response['author']);
+        $this->assertFalse($response['customizeWebspaceSettings']);
 
         $this->assertNotNull($this->findViewDocument($response['id'], 'de'));
 
@@ -327,13 +328,13 @@ class ArticleControllerTest extends SuluTestCase
         // test that ghost do not server webspace settings
         $response = $this->get($article['id'], 'en');
         $this->assertEquals($title, $response['title']);
-        $this->assertNull($response['mainWebspace']);
-        $this->assertNull($response['additionalWebspaces']);
+        $this->assertEquals($mainWebspace, $response['mainWebspace']);
+        $this->assertEquals($additionalWebspaces, $response['additionalWebspaces']);
 
         $viewDocument = $this->findViewDocument($response['id'], 'en');
         $this->assertNotNull($viewDocument);
-        $this->assertEquals('sulu_io', $viewDocument->getMainWebspace());
-        $this->assertEquals([], $viewDocument->getAdditionalWebspaces());
+        $this->assertEquals($mainWebspace, $viewDocument->getMainWebspace());
+        $this->assertEquals($additionalWebspaces, $viewDocument->getAdditionalWebspaces());
     }
 
     /**

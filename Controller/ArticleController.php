@@ -578,6 +578,11 @@ class ArticleController extends RestController implements ClassResourceInterface
             $document->setAdditionalWebspaces(null);
         }
 
+        if (array_key_exists('customizeWebspaceSettings', $data) && false === $data['customizeWebspaceSettings']) {
+            $document->setMainWebspace(null);
+            $document->setAdditionalWebspaces(null);
+        }
+
         $this->getDocumentManager()->persist(
             $document,
             $locale,

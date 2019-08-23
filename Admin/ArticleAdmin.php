@@ -84,14 +84,7 @@ class ArticleAdmin extends Admin
      */
     public function getRoutes(): array
     {
-        $locales = array_values(
-            array_map(
-                function(Localization $localization) {
-                    return $localization->getLocale();
-                },
-                $this->localizationManager->getLocalizations()
-            )
-        );
+        $locales = $this->localizationManager->getLocales();
 
         $formToolbarActionsWithType = [
             'sulu_admin.save_with_publishing',
@@ -144,6 +137,7 @@ class ArticleAdmin extends Admin
                 ->setFormKey('article')
                 ->setTabTitle('sulu_admin.details')
                 ->setTabPriority(1024)
+                ->setTabCondition('shadowOn == false')
                 ->addToolbarActions($formToolbarActionsWithType)
                 ->setParent(static::EDIT_FORM_ROUTE)
                 ->getRoute(),
@@ -151,6 +145,7 @@ class ArticleAdmin extends Admin
                 ->setResourceKey('articles')
                 ->setFormKey('page_seo')
                 ->setTabTitle('sulu_page.seo')
+                ->setTabCondition('shadowOn == false')
                 ->addToolbarActions($formToolbarActionsWithoutType)
                 ->setParent(static::EDIT_FORM_ROUTE)
                 ->getRoute(),
